@@ -48,10 +48,30 @@ Start the app:
 npm start
 ```
 
+Show command-line help:
+
+```bash
+npm start -- --help
+```
+
+Override the default scale, size, or URL:
+
+```bash
+npm start -- --scale=3 --width=640 --height=320 --url="https://nalsa.org/RaceControl?sound=1"
+```
+
+Supported flags:
+
+- `--help`: prints usage information and exits
+- `--scale=<number>`: sets the window size multiplier
+- `--width=<pixels>`: sets the window width explicitly
+- `--height=<pixels>`: sets the window height explicitly
+- `--url=<https-url>`: loads a different scoreboard page
+
 ## Current behavior and limitations
 
-- The scoreboard URL is hard-coded in [index.js](/Users/scott/git/jyc-scoreboard/index.js).
-- Window size is currently fixed at `192 x 96`, scaled by `2`.
+- Default scoreboard URL is [configured in `index.js`](/Users/scott/git/jyc-scoreboard/index.js).
+- Default window size is `192 x 96`, scaled by `2`, and can be overridden with `--scale`, `--width`, and `--height`.
 - The app depends on the remote RaceControl site being available.
 - There is no local configuration UI yet for choosing the display, URL, or size.
 

@@ -1,5 +1,101 @@
 const { app, BrowserWindow, screen } = require("electron");
 
+const DEFAULT_SCALE = 2;
+const DEFAULT_URL = "https://nalsa.org/RaceControl?sound=1";
+const BASE_WIDTH = 192;
+const BASE_HEIGHT = 96;
+
+function hasCliFlag(name) {
+  return process.argv.includes(`--${name}`);
+}
+
+function readCliOption(name) {
+  const exactPrefix = `--${name}=`;
+
+  for (let i = 0; i < process.argv.length; i += 1) {
+    const arg = process.argv[i];
+
+    if (arg.startsWith(exactPrefix)) {
+      return arg.slice(exactPrefix.length);
+    }
+
+    if (arg === `--${name}`) {
+      return process.argv[i + 1];
+    }
+  }
+
+  return undefined;
+}
+
+function getScale() {
+  return getPositiveNumberOption("scale", DEFAULT_SCALE);
+}
+
+function getScoreboardUrl() {
+  const rawUrl = readCliOption("url");
+
+  if (!rawUrl) {
+    return DEFAULT_URL;
+  }
+
+  try {
+    return new URL(rawUrl).toString();
+  } catch (error) {
+    console.warn(
+      `Invalid --url value "${rawUrl}". Falling back to ${DEFAULT_URL}.`
+    );
+    return DEFAULT_URL;
+  }
+}
+
+function getPositiveNumberOption(name, fallback) {
+  const rawValue = readCliOption(name);
+  const parsedValue = Number(rawValue);
+
+  if (!rawValue) {
+    return fallback;
+  }
+
+  if (Number.isFinite(parsedValue) && parsedValue > 0) {
+    return parsedValue;
+  }
+
+  console.warn(
+    `Invalid --${name} value "${rawValue}". Falling back to ${fallback}.`
+  );
+  return fallback;
+}
+
+function getWindowSize(scale) {
+  const defaultWidth = Math.round(BASE_WIDTH * scale);
+  const defaultHeight = Math.round(BASE_HEIGHT * scale);
+
+  return {
+    width: Math.round(getPositiveNumberOption("width", defaultWidth)),
+    height: Math.round(getPositiveNumberOption("height", defaultHeight))
+  };
+}
+
+function showHelp() {
+  console.log(`jyc-scoreboard
+
+Usage:
+  npm start -- [options]
+
+Options:
+  --help            Show this help and exit
+  --scale=<number>  Set the window size multiplier
+  --width=<pixels>  Set the window width explicitly
+  --height=<pixels> Set the window height explicitly
+  --url=<https-url> Load a different scoreboard page
+
+Examples:
+  npm start
+  npm start -- --scale=3
+  npm start -- --width=640 --height=320
+  npm start -- --scale=3 --url="https://nalsa.org/RaceControl?sound=1"`);
+}
+
 function createWindow() {
   const displays = screen.getAllDisplays();
 
@@ -9,13 +105,15 @@ function createWindow() {
 
   const { x, y } = targetDisplay.bounds;
 
-  const scale = 2;
+  const scale = getScale();
+  const scoreboardUrl = getScoreboardUrl();
+  const { width, height } = getWindowSize(scale);
 
   const win = new BrowserWindow({
     x: x,
     y: y,
-    width: 192 * scale,
-    height: 96 * scale,
+    width: width,
+    height: height,
     frame: false,
     resizable: false,
     alwaysOnTop: true,
@@ -28,7 +126,7 @@ function createWindow() {
   });
 
   // Load your scoreboard
-  win.loadURL("https://nalsa.org/RaceControl?sound=1");
+  win.loadURL(scoreboardUrl);
 
   // 🔊 Ensure not muted
   win.webContents.setAudioMuted(false);
@@ -56,8 +154,15 @@ function createWindow() {
   });
 }
 
-app.whenReady().then(createWindow);
+if (hasCliFlag("help")) {
+  showHelp();
+  process.exit(0);
+}
 
-app.on("window-all-closed", () => {
-  app.quit();
-});
+if (app) {
+  app.whenReady().then(createWindow);
+
+  app.on("window-all-closed", () => {
+    app.quit();
+  });
+}
