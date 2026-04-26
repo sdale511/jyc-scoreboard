@@ -1,0 +1,81 @@
+# =========================
+# Node / NPM
+# =========================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# =========================
+# Electron
+# =========================
+dist/
+build/
+out/
+release/
+*.asar
+
+# =========================
+# Environment / Secrets
+# =========================
+.env
+.env.*
+!.env.example
+
+# =========================
+# Logs
+# =========================
+logs/
+*.log
+
+# =========================
+# macOS
+# =========================
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# macOS temp files
+Icon?
+._*
+
+# =========================
+# IDE / Editor
+# =========================
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# =========================
+# Build / Cache
+# =========================
+.cache/
+.tmp/
+.temp/
+coverage/
+dist-ssr/
+
+# =========================
+# Optional: uploads / runtime data
+# =========================
+uploads/
+data/
+*.sqlite
+*.db
+
+# =========================
+# OBS / media (if you store locally)
+# =========================
+recordings/
+captures/
+
+# =========================
+# OS junk
+# =========================
+Thumbs.db
+ehthumbs.db
