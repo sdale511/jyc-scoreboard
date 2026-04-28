@@ -2,8 +2,9 @@ const { app, BrowserWindow, screen } = require("electron");
 
 const DEFAULT_SCALE = 2;
 const DEFAULT_URL = "https://nalsa.org/RaceControl?sound=1";
-const BASE_WIDTH = 192;
-const BASE_HEIGHT = 96;
+const FINISH_URL = "https://nalsa.org/FinishControl";
+const BASE_WIDTH = 180;
+const BASE_HEIGHT = 102;
 
 function hasCliFlag(name) {
   return process.argv.includes(`--${name}`);
@@ -34,18 +35,22 @@ function getScale() {
 function getScoreboardUrl() {
   const rawUrl = readCliOption("url");
 
-  if (!rawUrl) {
-    return DEFAULT_URL;
+  if (rawUrl) {
+    try {
+      return new URL(rawUrl).toString();
+    } catch (error) {
+      console.warn(
+        `Invalid --url value "${rawUrl}". Falling back to ${DEFAULT_URL}.`
+      );
+      return DEFAULT_URL;
+    }
   }
 
-  try {
-    return new URL(rawUrl).toString();
-  } catch (error) {
-    console.warn(
-      `Invalid --url value "${rawUrl}". Falling back to ${DEFAULT_URL}.`
-    );
-    return DEFAULT_URL;
+  if (hasCliFlag("finish")) {
+    return FINISH_URL;
   }
+
+  return DEFAULT_URL;
 }
 
 function getPositiveNumberOption(name, fallback) {
@@ -77,6 +82,9 @@ function getWindowSize(scale) {
 }
 
 function showHelp() {
+  const defaultWidth = BASE_WIDTH * DEFAULT_SCALE;
+  const defaultHeight = BASE_HEIGHT * DEFAULT_SCALE;
+
   console.log(`jyc-scoreboard
 
 Usage:
@@ -84,13 +92,16 @@ Usage:
 
 Options:
   --help            Show this help and exit
-  --scale=<number>  Set the window size multiplier
-  --width=<pixels>  Set the window width explicitly
-  --height=<pixels> Set the window height explicitly
+  --finish          Load the FinishControl page
+  --scale=<number>  Set the window size multiplier (default: ${DEFAULT_SCALE})
+  --width=<pixels>  Set the window width explicitly (default: ${defaultWidth})
+  --height=<pixels> Set the window height explicitly (default: ${defaultHeight})
   --url=<https-url> Load a different scoreboard page
+                    (default: ${DEFAULT_URL})
 
 Examples:
   npm start
+  npm start -- --finish
   npm start -- --scale=3
   npm start -- --width=640 --height=320
   npm start -- --scale=3 --url="https://nalsa.org/RaceControl?sound=1"`);
