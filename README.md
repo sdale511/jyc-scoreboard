@@ -60,6 +60,12 @@ Open FinishControl instead of RaceControl:
 npm start -- --finish
 ```
 
+Open PracticeControl instead of RaceControl:
+
+```bash
+npm start -- --practice
+```
+
 Override the default scale, size, or URL:
 
 ```bash
@@ -70,6 +76,7 @@ Supported flags:
 
 - `--help`: prints usage information and exits
 - `--finish`: loads `https://nalsa.org/FinishControl`
+- `--practice`: loads `http://nalsa.org/practicecontrol`
 - `--scale=<number>`: sets the window size multiplier, default `2`
 - `--width=<pixels>`: sets the window width explicitly, default `360`
 - `--height=<pixels>`: sets the window height explicitly, default `204`
@@ -79,6 +86,7 @@ Supported flags:
 
 - Default scoreboard URL is [configured in `index.js`](/Users/scott/git/jyc-scoreboard/index.js).
 - `--finish` switches the app to `https://nalsa.org/FinishControl`.
+- `--practice` switches the app to `http://nalsa.org/practicecontrol`.
 - Default window size is `180 x 102`, scaled by `2`, and can be overridden with `--scale`, `--width`, and `--height`.
 - The app depends on the remote RaceControl site being available.
 - There is no local configuration UI yet for choosing the display, URL, or size.

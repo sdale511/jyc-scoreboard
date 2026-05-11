@@ -3,6 +3,7 @@ const { app, BrowserWindow, screen } = require("electron");
 const DEFAULT_SCALE = 2;
 const DEFAULT_URL = "https://nalsa.org/RaceControl?sound=1";
 const FINISH_URL = "https://nalsa.org/FinishControl";
+const PRACTICE_URL = "http://nalsa.org/practicecontrol";
 const BASE_WIDTH = 180;
 const BASE_HEIGHT = 102;
 
@@ -50,6 +51,10 @@ function getScoreboardUrl() {
     return FINISH_URL;
   }
 
+  if (hasCliFlag("practice")) {
+    return PRACTICE_URL;
+  }
+
   return DEFAULT_URL;
 }
 
@@ -92,7 +97,8 @@ Usage:
 
 Options:
   --help            Show this help and exit
-  --finish          Load the FinishControl page
+  --finish          Load the FinishControl page (${FINISH_URL})
+  --practice        Load the PracticeControl page (${PRACTICE_URL})
   --scale=<number>  Set the window size multiplier (default: ${DEFAULT_SCALE})
   --width=<pixels>  Set the window width explicitly (default: ${defaultWidth})
   --height=<pixels> Set the window height explicitly (default: ${defaultHeight})
@@ -102,6 +108,7 @@ Options:
 Examples:
   npm start
   npm start -- --finish
+  npm start -- --practice
   npm start -- --scale=3
   npm start -- --width=640 --height=320
   npm start -- --scale=3 --url="https://nalsa.org/RaceControl?sound=1"`);
