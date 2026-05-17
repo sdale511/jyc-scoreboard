@@ -86,6 +86,17 @@ function getWindowSize(scale) {
   };
 }
 
+function getTargetDisplay(displays) {
+  const primaryDisplay = screen.getPrimaryDisplay();
+  const primaryX = primaryDisplay.bounds.x;
+
+  if (hasCliFlag("left")) {
+    return displays.find(display => display.bounds.x < primaryX) || displays[0];
+  }
+
+  return displays.find(display => display.bounds.x > primaryX) || displays[0];
+}
+
 function showHelp() {
   const defaultWidth = BASE_WIDTH * DEFAULT_SCALE;
   const defaultHeight = BASE_HEIGHT * DEFAULT_SCALE;
@@ -99,6 +110,7 @@ Options:
   --help            Show this help and exit
   --finish          Load the FinishControl page (${FINISH_URL})
   --practice        Load the PracticeControl page (${PRACTICE_URL})
+  --left            Place the window on the display left of the main screen
   --scale=<number>  Set the window size multiplier (default: ${DEFAULT_SCALE})
   --width=<pixels>  Set the window width explicitly (default: ${defaultWidth})
   --height=<pixels> Set the window height explicitly (default: ${defaultHeight})
@@ -109,6 +121,7 @@ Examples:
   npm start
   npm start -- --finish
   npm start -- --practice
+  npm start -- --left
   npm start -- --scale=3
   npm start -- --width=640 --height=320
   npm start -- --scale=3 --url="https://nalsa.org/RaceControl?sound=1"`);
@@ -116,10 +129,7 @@ Examples:
 
 function createWindow() {
   const displays = screen.getAllDisplays();
-
-  // Find the display to the RIGHT of your main screen
-  const targetDisplay =
-    displays.find(d => d.bounds.x > 0) || displays[0];
+  const targetDisplay = getTargetDisplay(displays);
 
   const { x, y } = targetDisplay.bounds;
 
