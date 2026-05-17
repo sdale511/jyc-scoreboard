@@ -108,6 +108,7 @@ Usage:
 
 Options:
   --help            Show this help and exit
+  --start           Load the RaceControl page (${DEFAULT_URL})
   --finish          Load the FinishControl page (${FINISH_URL})
   --practice        Load the PracticeControl page (${PRACTICE_URL})
   --left            Place the window on the display left of the main screen
@@ -119,6 +120,7 @@ Options:
 
 Examples:
   npm start
+  npm start -- --start
   npm start -- --finish
   npm start -- --practice
   npm start -- --left

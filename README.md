@@ -54,6 +54,12 @@ Show command-line help:
 npm start -- --help
 ```
 
+Open RaceControl explicitly:
+
+```bash
+npm start -- --start
+```
+
 Open FinishControl instead of RaceControl:
 
 ```bash
@@ -81,6 +87,7 @@ npm start -- --scale=3 --width=640 --height=320 --url="https://nalsa.org/RaceCon
 Supported flags:
 
 - `--help`: prints usage information and exits
+- `--start`: loads `https://nalsa.org/RaceControl?sound=1`
 - `--finish`: loads `https://nalsa.org/FinishControl`
 - `--practice`: loads `http://nalsa.org/practicecontrol`
 - `--left`: places the window on the display left of the main screen
@@ -92,6 +99,7 @@ Supported flags:
 ## Current behavior and limitations
 
 - Default scoreboard URL is [configured in `index.js`](/Users/scott/git/jyc-scoreboard/index.js).
+- `--start` explicitly selects `https://nalsa.org/RaceControl?sound=1`.
 - `--finish` switches the app to `https://nalsa.org/FinishControl`.
 - `--practice` switches the app to `http://nalsa.org/practicecontrol`.
 - By default the app targets a display to the right of the main screen; `--left` targets a display to the left instead.
