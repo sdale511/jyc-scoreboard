@@ -98,7 +98,7 @@ Supported flags:
 
 ## Current behavior and limitations
 
-- Default scoreboard URL is [configured in `index.js`](/Users/scott/git/jyc-scoreboard/index.js).
+- Default scoreboard URL is [configured in `index.js`](index.js).
 - `--start` explicitly selects `https://nalsa.org/RaceControl?sound=1`.
 - `--finish` switches the app to `https://nalsa.org/FinishControl`.
 - `--practice` switches the app to `http://nalsa.org/practicecontrol`.
@@ -109,5 +109,5 @@ Supported flags:
 
 ## File overview
 
-- [index.js](/Users/scott/git/jyc-scoreboard/index.js): Electron app entrypoint and window setup
-- [package.json](/Users/scott/git/jyc-scoreboard/package.json): project metadata and start script
+- [index.js](index.js): Electron app entrypoint and window setup
+- [package.json](package.json): project metadata and start script
